@@ -5,32 +5,78 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        margin: 20px;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        background: url("6039895.jpg") no-repeat center center fixed;
+        background-size: cover;
+      }
+      .container {
+        width: 80%;
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      h1 {
+        text-align: center;
+        color: #0066cc;
       }
       form {
+        display: flex;
+        justify-content: center;
         margin-bottom: 20px;
       }
       input[type="text"] {
         padding: 10px;
         font-size: 16px;
+        border: 2px solid #0066cc;
+        border-radius: 5px;
+        width: 70%;
+        margin-right: 10px;
       }
       button {
         padding: 10px 20px;
         font-size: 16px;
         cursor: pointer;
+        background-color: #0066cc;
+        color: white;
+        border: none;
+        border-radius: 5px;
       }
-      p {
+      button:hover {
+        background-color: #005bb5;
+      }
+      .weather-info {
+        text-align: center;
         font-size: 18px;
         font-weight: bold;
+        margin-top: 20px;
+      }
+      .weather-info img {
+        width: 50px;
+        height: 50px;
+        vertical-align: middle;
       }
     </style>
   </head>
   <body>
-    <h1>Weather App</h1>
-    <form method="post">
-      <input type="text" name="city" placeholder="Enter city" required />
-      <button type="submit">Get Weather</button>
-    </form>
-    <p>{{ weather_info }}</p>
+    <div class="container">
+      <h1>Weather App</h1>
+      <form method="post">
+        <input type="text" name="city" placeholder="Enter city" required />
+        <button type="submit">Get Weather</button>
+      </form>
+      <div class="weather-info">
+        <p>{{ weather_info }}</p>
+        <!-- Replace 'icon_url' with the actual URL or path to the weather icon -->
+        <img
+          src="http://openweathermap.org/img/wn/{{ weather_icon }}.png"
+          alt="Weather Icon"
+        />
+      </div>
+    </div>
   </body>
 </html>

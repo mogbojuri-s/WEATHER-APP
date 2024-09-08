@@ -1,10 +1,8 @@
 from flask import Flask, render_template, request
 import requests
-import os
 
 app = Flask(__name__)
 
-# Replace 'YOUR_API_KEY' with your actual OpenWeatherMap API key
 WEATHER_API_KEY = '276dcad5626166ccd09af29c96fdec39'
 BASE_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
@@ -16,27 +14,30 @@ def get_weather(city):
 def format_response(weather):
     try:
         if weather.get('cod') != 200:
-            return 'City not found or API error'
+            return 'City not found or API error', None
 
         city = weather['name']
         condition = weather['weather'][0]['description']
         temp = weather['main']['temp']
-        return f'City: {city}\nCondition: {condition}\nTemperature: {temp}°F'
+        icon = weather['weather'][0]['icon']
+        weather_info = f'City: {city}\nCondition: {condition}\nTemperature: {temp}°F'
+        return weather_info, icon
     except Exception as e:
-        return f'There was a problem retrieving that information: {e}'
+        return f'There was a problem retrieving that information: {e}', None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     weather_info = ""
+    weather_icon = ""
     if request.method == 'POST':
         city = request.form.get('city')
         if city:
-            weather = get_weather(city)
-            weather_info = format_response(weather)
+            weather, icon = get_weather(city), get_weather(city)['weather'][0]['icon']
+            weather_info, weather_icon = format_response(weather)
+            weather_icon = icon
         else:
             weather_info = 'Please enter a city name.'
-    return render_template('index.html', weather_info=weather_info)
+    return render_template('index.html', weather_info=weather_info, weather_icon=weather_icon)
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 8080))  # Use PORT from environment or default to 8080
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
